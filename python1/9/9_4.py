@@ -6,10 +6,27 @@ import re
 import os
 import shutil
 
-dataPattern = re.compile(r'''(
-    (.*?)
-    ((0|1)?\d)-
-    ((0|1|2|3)?\d)-
-    ((19|20)\d\d)
-    (.*?)$
+datePattern = re.compile(r'''(
+    (.*?)               # (1)
+    ((0|1)?\d)-         # (2(3))    
+    ((0|1|2|3)?\d)-     # (4(5))
+    ((19|20)\d\d)       # (6(7))
+    (.*?)$              # (8)
 )''', re.VERBOSE)
+
+for amerFilename in os.listdir('.'):
+    mo = datePattern.search(amerFilename)
+    if not mo:
+        continue
+
+    beforePart = mo.group[1]
+    monthPart = mo.group[2]
+    dayPart = mo.group[4]
+    yearPart = mo.group[6]
+    afterPart = mo.group[8]
+
+    euroFilename = beforePart + dayPart + '-' + monthPart + '-' + yearPart
+    originName = os.path.join(os.path.abspath('.'), amerFilename)
+    newName = os.path.join(os.path.abspath('.'), euroFilename)
+
+    shutil.move(originName, newName)
