@@ -23,7 +23,7 @@ param = sys.argv[1:]
 keyword = ' '.join(param)
 print('The keyword is {}'.format(keyword))
 
-res = requests.get('https://google.com/search?q={}'.format(keyword))
+res = requests.get('http://google.com/search?q={}'.format(keyword))
 print(res.status_code)
 try:
     res.raise_for_status()
@@ -33,9 +33,8 @@ except Exception as err:
 print(res.text)
 soup = bs4.BeautifulSoup(res.text)
 elems = soup.select('.r a')
-# numOpen = min(5, len(elems))
-# for i in range(numOpen):
-# print(len(elems))
-# i=0
-webbrowser.open('https://google.com' + elems[i].get('href'))
+numOpen = min(5, len(elems))
+for i in range(numOpen):
+    print(len(elems))
+    webbrowser.open('https://google.com' + elems[i].get('href'))
 
