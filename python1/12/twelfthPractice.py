@@ -22,9 +22,9 @@ def genMultiTable(num):
         sheet['A'+str(i)] = i-1
         sheet[get_column_letter(i)+'1'] = i-1
     for i in range(2, num+2):
-        for i in range (2, num+2):
+        for j in range (2, num+2):
             letter = get_column_letter(i)
-            sheet[letter+str(i)].value = sheet[letter+'1'].value*sheet['A'+str(i)].value
+            sheet[letter+str(j)].value = sheet[letter+'1'].value*sheet['A'+str(j)].value
     wb.save('multiplicationTable.xlsx')
 
 if len(sys.argv) == 1:
