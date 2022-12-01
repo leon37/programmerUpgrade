@@ -7,17 +7,16 @@
 import csv, openpyxl, os
 from openpyxl.utils import get_column_letter
 
-os.chdir('python1\\14')
 os.makedirs('csvSpreadsheets', exist_ok=True)
 for excelFile in os.listdir('excelSpreadsheets'):
-    wb = openpyxl.load_workbook(os.path.join('excelSpreadsheets',excelFile))
-    for sheetName in wb.get_sheet_names():
-        sheet = wb.get_sheet_by_name(sheetName)
+    wb = openpyxl.load_workbook(os.path.join('excelSpreadsheets', excelFile))
+    for sheetName in wb.sheetnames:
+        sheet = wb[sheetName]
         contents = []
         for i in range(1, sheet.max_column):
             row = []
             for j in range(1, sheet.max_row):
-                row.append(sheet[get_column_letter(j)+str(i)])
+                row.append(sheet[get_column_letter(j) + str(i)].value)
             contents.append(row)
         excelFileBaseName = os.path.splitext(excelFile)[0]
         newFilename = excelFileBaseName + '_' + sheetName + '.csv'
