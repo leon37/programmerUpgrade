@@ -4,6 +4,7 @@ project:programmerUpgrade
 date:2022/12/2
 email:13368447@qq.com
 '''
+<<<<<<< HEAD
 # 在第11章，你编写了一个程序，从XKCD网站下载所有的XKCD漫画。
 # 这是一个单线程程序：它一次下载一幅漫画。
 # 程序运行的大部分时间，都用于建立网络连接来开始下载，以及将下载的图像写入硬盘。
@@ -49,3 +50,5 @@ for downloadThread in downloadThreads:
     downloadThread.join()
 
 print('Done.')
+=======
+>>>>>>> d08fbce5eaf32adba5ced747e8bd376a4efe5519
