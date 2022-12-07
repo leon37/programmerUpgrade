@@ -1,9 +1,10 @@
-'''
+"""
 author:leon
 project:programmerUpgrade
 date:2022/12/7
 email:13368447@qq.com
-'''
+"""
+
 
 class Car:
 
@@ -28,6 +29,9 @@ class Car:
 
     def incrementOdometer(self, miles):
         self.odometerReading += miles
+
+    def fillGasTank(self):
+        print('This car\'s gas tank has been filled.')
 
 
 myNewCar = Car('chevrolet', 'malibu', '2021')
