@@ -6,6 +6,9 @@ email:13368447@qq.com
 """
 
 
-def getFormattedName(first, last):
-    fullName = first + ' ' + last
+def getFormattedName(first, last, middle=''):
+    if middle:
+        fullName = first + ' ' + middle + ' ' + last
+    else:
+        fullName = first + ' ' + last
     return fullName.title()
