@@ -6,9 +6,10 @@ email:13368447@qq.com
 """
 import sys
 import pygame
+import game_functions as gf
+
 from settings import Settings
 from ship import Ship
-import game_functions as gf
 from pygame.sprite import Group
 
 
@@ -23,6 +24,11 @@ def runGame():
     ship = Ship(aiSettings, screen)
     # 创建一个用于存储子弹的编组
     bullets = Group()
+    # 创建一个外星人编组
+    aliens = Group()
+
+    # 创建外星人群
+    gf.createFleet(aiSettings, screen, ship, aliens)
 
     # 开始游戏的主循环
     while True:
@@ -30,6 +36,7 @@ def runGame():
         gf.checkEvents(aiSettings, screen, ship, bullets)
         ship.update()
         gf.updateBullets(bullets)
-        gf.updateScreen(aiSettings, screen, ship, bullets)
+        gf.updateScreen(aiSettings, screen, ship, aliens, bullets)
+
 
 runGame()
