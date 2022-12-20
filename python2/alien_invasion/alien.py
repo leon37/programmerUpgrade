@@ -7,6 +7,7 @@ email:13368447@qq.com
 import pygame
 from pygame.sprite import Sprite
 
+
 class Alien(Sprite):
     def __init__(self, aiSettings, screen):
         """初始化外星人并设置其起始位置"""
@@ -28,3 +29,16 @@ class Alien(Sprite):
     def blitme(self):
         """在指定位置绘制外星人"""
         self.screen.blit(self.image, self.rect)
+
+    def update(self):
+        """向左或向右移动外星人"""
+        self.x += (self.aiSettings.alienSpeedFactor * self.aiSettings.fleetDirection)
+        self.rect.x = self.x
+
+    def checkEdges(self):
+        """如果外星人位于屏幕边缘，就返回True"""
+        screenRect = self.screen.get_rect()
+        if self.rect.right >= screenRect.right:
+            return True
+        elif self.rect.left <= 0:
+            return True
