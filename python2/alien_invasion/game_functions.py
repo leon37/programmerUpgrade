@@ -6,6 +6,7 @@ email:13368447@qq.com
 """
 import sys
 import pygame
+from time import sleep
 
 from bullet import Bullet
 from alien import Alien
@@ -66,7 +67,7 @@ def updateScreen(aiSettings, screen, ship, aliens, bullets):
     pygame.display.flip()
 
 
-def updateBullets(bullets):
+def updateBullets(aiSettings, screen, ship, aliens, bullets):
     """更新子弹的位置，并删除已经消失的子弹"""
     bullets.update()
 
@@ -74,6 +75,19 @@ def updateBullets(bullets):
     for bullet in bullets.copy():
         if bullet.rect.bottom < 0:
             bullets.remove(bullet)
+
+    checkBulletAlienCollisions(aiSettings, screen, ship, aliens, bullets)
+
+
+def checkBulletAlienCollisions(aiSettings, screen, ship, aliens, bullets):
+    """响应子弹和外星人的碰撞"""
+    # 删除发生碰撞的子弹和外星人
+    collisions = pygame.sprite.groupcollide(bullets, aliens, False, True)
+
+    if len(aliens) == 0:
+        # 删除现有的子弹并新建一群外星人
+        bullets.empty()
+        createFleet(aiSettings, screen, ship, aliens)
 
 
 def fireBullet(aiSettings, screen, ship, bullets):
@@ -137,9 +151,42 @@ def changeFleetDirection(aiSettings, aliens):
     aiSettings.fleetDirection *= -1
 
 
-def updateAliens(aiSettings, aliens):
+def shipHit(aiSettings, stats, screen, ship, aliens, bullets):
+    """响应被外星人撞到的飞船"""
+    # 将shipLeft减1
+    stats.shipsLeft -= 1
+
+    # 清空外星人列表和子弹列表
+    aliens.empty()
+    bullets.empty()
+
+    # 创建一群新的外星人，并将飞船放到屏幕底端中央
+    createFleet(aiSettings, screen, ship, aliens)
+    ship.centerShip()
+
+    # 暂停
+    sleep(0.5)
+
+
+def updateAliens(aiSettings, stats, screen, ship, aliens, bullets):
     """
     检查是否有外星人位于屏幕边缘，并更新整群外星人的位置
     """
     checkFleetEdges(aiSettings, aliens)
     aliens.update()
+
+    # 检测外星人和飞船之间的碰撞
+    if pygame.sprite.spritecollideany(ship, aliens):
+        shipHit(aiSettings, stats, screen, ship, aliens, bullets)
+
+    checkAliensBottom(aiSettings, stats, screen, ship, aliens, bullets)
+
+
+def checkAliensBottom(aiSettings, stats, screen, ship, aliens, bullets):
+    """检查是否有外星人到达了屏幕底端"""
+    screenRect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screenRect.bottom:
+            # 像飞船被撞到一样进行处理
+            shipHit(aiSettings, stats, screen, ship, aliens, bullets)
+            break

@@ -9,6 +9,7 @@ import pygame
 import game_functions as gf
 
 from settings import Settings
+from game_stats import GameStats
 from ship import Ship
 from pygame.sprite import Group
 
@@ -19,6 +20,9 @@ def runGame():
     aiSettings = Settings()
     screen = pygame.display.set_mode((aiSettings.screenWidth, aiSettings.screenHeight))
     pygame.display.set_caption('Alien Invasion')
+
+    # 创建一个用于存储游戏统计信息的实例
+    stats = GameStats(aiSettings)
 
     # 创建一艘飞船
     ship = Ship(aiSettings, screen)
@@ -34,9 +38,10 @@ def runGame():
     while True:
         # 监视键盘和鼠标
         gf.checkEvents(aiSettings, screen, ship, bullets)
-        ship.update()
-        gf.updateBullets(bullets)
-        gf.updateAliens(aiSettings, aliens)
+        if stats.gameActive:
+            ship.update()
+            gf.updateBullets(aiSettings, screen, ship, aliens, bullets)
+            gf.updateAliens(aiSettings, stats, screen, ship, aliens, bullets)
         gf.updateScreen(aiSettings, screen, ship, aliens, bullets)
 
 
